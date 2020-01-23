@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import * as mapboxgl from 'mapbox-gl';
+import mapboxgl from 'mapbox-gl';
 import { MapboxLayer } from '@deck.gl/mapbox';
 import { ScenegraphLayer } from "@deck.gl/mesh-layers";
 import { registerLoaders } from "@loaders.gl/core";
@@ -21,7 +21,7 @@ export class MapBoxComponent implements OnInit {
 
   public ngOnInit(): void {
     registerLoaders([GLTFScenegraphLoader]);
-    (mapboxgl as typeof mapboxgl).accessToken = 'pk.eyJ1IjoiZ2Vvcmdpb3MtdWJlciIsImEiOiJjanZidTZzczAwajMxNGVwOGZrd2E5NG90In0.gdsRu_UeU_uPi9IulBruXA';
+    mapboxgl.accessToken = 'pk.eyJ1IjoibWFwYm94IiwiYSI6ImNpejY4M29iazA2Z2gycXA4N2pmbDZmangifQ.-g_vE53SD2WrJ6tFX7QHmA';
       this.map = new mapboxgl.Map({
         container: 'map',
         style: this.style,
@@ -32,7 +32,9 @@ export class MapBoxComponent implements OnInit {
     });
 
     this.createDeck3dObjectLayer(
-      'duckObject','assets/Duck.glb',this.lngLat[0],this.lngLat[1], 30
+      'duckObject', 
+      'https://raw.githubusercontent.com/KhronosGroup/glTF-Sample-Models/master/2.0/Duck/glTF-Binary/Duck.glb' ,
+      this.lngLat[0],this.lngLat[1], 30
     );
 
     this.map.on('load', () => {
@@ -71,7 +73,6 @@ export class MapBoxComponent implements OnInit {
         this.mapLayerCollection.push(layer);
   }
 
-  
   private create3dDefaultMapboxBuildingsLayer(){
     const firstLabelLayerId = this.map.getStyle().layers.find(layer => layer.type === 'symbol').id;
 
